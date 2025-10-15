@@ -7,6 +7,10 @@ WIDTH, HEIGHT = 800, 600
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Collision Game")
 
+background = pygame.image.load("hwbg.jpg")
+background = pygame.transform.scale(background, (WIDTH, HEIGHT))
+hit_sound = pygame.mixer.Sound("collision.mp3")
+
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 
@@ -42,8 +46,11 @@ while running:
     for enemy in enemies:
         if player.colliderect(enemy):
             score += 1
+            hit_sound.play()
+            enemy.x = random.randint(0, WIDTH - enemy_size)
+            enemy.y = random.randint(0, HEIGHT - enemy_size)
 
-    screen.fill((255, 255, 255))
+    screen.blit(background, (0, 0))
     pygame.draw.rect(screen, BLUE, player)
     for enemy in enemies:
         pygame.draw.rect(screen, RED, enemy)
